@@ -46,14 +46,25 @@ void menuInicial(){
 		fflush( stdin);
 		printf("1. JUGAR \n");
 		fflush( stdin);
-		printf("2. Salir \n");
+		printf("2. Aniadir palabra \n");
+		fflush( stdin);
+		printf("3. Comprobar puntos \n");
+		fflush( stdin);
+		printf("4. Salir \n");
+		fflush( stdin);
+		printf("Opcion: ");
 		fflush( stdin);
 		fflush( stdout);
 		scanf("%d", &num);
-
+		fflush( stdout);
+		fflush( stdin);
 		switch(num){
 					case 1:
-						printf("Uno seleccionado");
+						printf("HEee");
+						adivinarPalabra();
+						printf("HEee");
+						fflush( stdout);
+						fflush( stdin);
 						break;
 					case 2:
 						printf("Dos seleccionado");
@@ -67,4 +78,18 @@ void menuInicial(){
 		}
 
 
+}
+void adivinarPalabra(){
+	printf("Aqui estoy");
+	char palabraAdivinar[6];
+	obtenerPalabra(&palabraAdivinar);
+	printf("%s",palabraAdivinar);
+	fflush( stdin);
+	fflush( stdout);
+	printf("AAAA");
+	fflush( stdin);
+	fflush( stdout);
+}
+void obtenerPalabra(char *palabra[6]){
+	strcpy(*palabra,"LIBRO");
 }

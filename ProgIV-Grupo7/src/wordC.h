@@ -11,6 +11,7 @@
 int comprobarCharConString(char c,char *string);
 void pruebaLecturaFicheros();
 void menuInicial();
-
+void adivinarPalabra();
+void obtenerPalabra(char *palabra[6]);
 
 #endif /* WORDC_H_ */

@@ -5,13 +5,13 @@
 
 
 int main(int argc, char **argv) {
-	int resul = 0;
-
-	resul = comprobarCharConString('c',"cc");
-	printf("%d\n",resul);
-	pruebaLecturaFicheros();
-
+	//int resul = 0;
 	menuInicial();
+
+	/*resul = comprobarCharConString('c',"cc");
+	pruebaLecturaFicheros();
+	*/
+
 
 
 	return 0;
