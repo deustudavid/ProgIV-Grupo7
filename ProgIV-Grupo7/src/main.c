@@ -9,7 +9,7 @@ int main(int argc, char **argv) {
 	//menuInicial();
 
 	resul = comprobarCharConString('c',"cc");
-	printf("%d",resul);
+	printf("%d\n",resul);
 	pruebaLecturaFicheros();
 	return 0;
 }
