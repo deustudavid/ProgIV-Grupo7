@@ -30,7 +30,7 @@ void pruebaLecturaFicheros(){
 		if(f!=(FILE*)NULL){
 			fscanf(f,"%s %s %s %s ", palabra1, palabra2, palabra3, palabra4);
 			system("color 4");
-			printf("Con el fscanf:\n palabra1: %s\n Palabra2: %s\n Palabra3: %s \n Palabra4: %s \nhasta aqui" , palabra1,palabra2,palabra3,palabra4);
+			printf("Con el fscanf:\n palabra1: %s\n Palabra2: %s\n Palabra3: %s \n Palabra4: %s \nhasta aqui \n" , palabra1,palabra2,palabra3,palabra4);
 			fclose(f);
 		}else{
 			printf("El fichero no se ha abierto\n");
@@ -38,26 +38,33 @@ void pruebaLecturaFicheros(){
 
 }
 void menuInicial(){
+
 	int num = 0;
 
 
-	printf(" BIENVENIDO A WORDC \n \n");
-	printf("1. JUGAR \n");
-	printf("2. Salir");
-	scanf("%d", &num);
-	switch(num){
-	case 1:
-		printf("Uno seleccionado");
-		break;
-	case 2:
-		printf("Dos seleccionado");
-		break;
-	case 3:
-		break;
-	default:
-		printf("Opción incorrecta");
-		break;
-	}
+		printf("** BIENVENIDO A WORDC **\n \n");
+		fflush( stdin);
+		printf("1. JUGAR \n");
+		fflush( stdin);
+		printf("2. Salir \n");
+		fflush( stdin);
+		fflush( stdout);
+		scanf("%d", &num);
+
+		switch(num){
+					case 1:
+						printf("Uno seleccionado");
+						break;
+					case 2:
+						printf("Dos seleccionado");
+						break;
+					case 3:
+						break;
+					default:
+						printf("Opción incorrecta \n");
+						menuInicial();
+						break;
+		}
 
 
 }

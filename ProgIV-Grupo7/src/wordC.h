@@ -12,4 +12,5 @@ int comprobarCharConString(char c,char *string);
 void pruebaLecturaFicheros();
 void menuInicial();
 
+
 #endif /* WORDC_H_ */
