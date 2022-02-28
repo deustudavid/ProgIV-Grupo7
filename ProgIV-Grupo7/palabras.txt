@@ -1,0 +1,8 @@
+coche
+libro
+penco
+arbol
+jarra
+roble
+marco
+
