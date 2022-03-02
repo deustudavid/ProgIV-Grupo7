@@ -5,12 +5,7 @@
 
 
 int main(int argc, char **argv) {
-	//int resul = 0;
 	menuInicial();
-
-	/*resul = comprobarCharConString('c',"cc");
-	pruebaLecturaFicheros();
-	*/
 
 
 

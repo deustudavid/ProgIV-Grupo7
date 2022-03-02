@@ -1,4 +1,4 @@
-/*
+	/*
  * wordC.h
  *
  *  Created on: 23 feb 2022
@@ -8,10 +8,28 @@
 #ifndef WORDC_H_
 #define WORDC_H_
 
-int comprobarCharConString(char c,char *string);
+typedef struct
+{
+	char jugador[20], palabra[6];
+	int intentos;
+}sPuntuacion;
+
+typedef struct
+{
+	char caracter;
+	int posicion[4];
+	int nPosicion;
+}sLocalizadorChar;
+
+sLocalizadorChar comprobarCharConString(char c,char *string);
+void comprobarStringConString(char *stringUsuario, char *stringPalabra);
 void pruebaLecturaFicheros();
 void menuInicial();
 void adivinarPalabra();
-void obtenerPalabra(char *palabra[6]);
+void obtenerPalabra(char *palabra);
+
+
+
+
 
 #endif /* WORDC_H_ */
