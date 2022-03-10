@@ -10,7 +10,7 @@
 
 typedef struct
 {
-	char jugador[20], palabra[6];
+	char jugador[20], palabra[6]; //Hay que meter si eso el tipo de la palabra
 	int intentos;
 }sPuntuacion;
 

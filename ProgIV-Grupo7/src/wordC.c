@@ -94,7 +94,6 @@ void menuInicial(){
 					case 1:
 						printf("Todavia no funciona\n");
 						fflush(stdout);
-						printf("Opcion %d seleccionada\n",num);
 						fflush(stdout);
 						adivinarPalabra();
 						break;
@@ -113,9 +112,9 @@ void menuInicial(){
 						comprobarStringConString("libro","arbol");
 						break;
 					case 6:
-						printf("Char: c String: cacac \n");
+						printf("Char: a String: cacac \n");
 						fflush(stdout);
-						a = comprobarCharConString('c', "cacac");
+						a = comprobarCharConString('j', "alejo");
 						printf("%c\n",a.caracter);
 						fflush(stdout);
 						int i;
