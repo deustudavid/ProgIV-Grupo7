@@ -57,6 +57,32 @@ void pruebaLecturaFicheros(){
 
 }
 
+void numeroDePalabrasEnFichero(){
+
+	int cont;
+	char ca;
+
+	FILE *pf;
+
+	pf = fopen("palabras.txt", "r");
+	if(pf != (FILE *)NULL){
+		while(1){
+			ca = fgetc(pf);
+
+			if(ca == '\n'){
+				cont++;
+			}
+			if(ca == EOF){ //Si el cararcter es EOF End Of Line hemos llegado al final del fichero
+				printf("%d", cont); // Numero de filas del fichero
+				break;
+			}
+		}
+		fclose(pf);
+	}else{
+		printf("Error al abrir el fichero");
+	}
+}
+
 void adivinarPalabra(){
 	char palabraAdivinar[6];
 	obtenerPalabra(palabraAdivinar);
@@ -106,7 +132,8 @@ void menuInicial(){
 						fflush(stdout);
 						break;
 					case 4:
-						pruebaLecturaFicheros();
+						//pruebaLecturaFicheros();
+						numeroDePalabrasEnFichero();
 						break;
 					case 5:
 						comprobarStringConString("libro","arbol");

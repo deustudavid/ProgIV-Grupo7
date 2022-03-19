@@ -27,6 +27,7 @@ void pruebaLecturaFicheros();
 void menuInicial();
 void adivinarPalabra();
 void obtenerPalabra(char *palabra);
+void numeroDePalabrasEnFichero();
 
 
 
