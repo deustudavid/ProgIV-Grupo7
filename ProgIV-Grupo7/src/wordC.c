@@ -57,9 +57,9 @@ void pruebaLecturaFicheros(){
 
 }
 
-void numeroDePalabrasEnFichero(){
+void numeroDePalabrasEnFichero(){ //Cambiar a que devuelva un int (return del cont)
 
-	int cont;
+	int cont = 0;
 	char ca;
 
 	FILE *pf;
@@ -73,7 +73,7 @@ void numeroDePalabrasEnFichero(){
 				cont++;
 			}
 			if(ca == EOF){ //Si el cararcter es EOF End Of Line hemos llegado al final del fichero
-				printf("%d", cont); // Numero de filas del fichero
+				printf("%d\n", cont); // Numero de filas del fichero
 				break;
 			}
 		}
