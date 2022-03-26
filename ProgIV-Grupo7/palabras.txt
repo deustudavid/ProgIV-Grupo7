@@ -5,3 +5,6 @@ arbol
 jarra
 roble
 marco
+nacer
+letra
+tecla

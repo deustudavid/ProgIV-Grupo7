@@ -4,6 +4,7 @@
  *  Created on: 23 feb 2022
  *      Author: susil
  */
+#include <stdbool.h>
 
 #ifndef WORDC_H_
 #define WORDC_H_
@@ -28,8 +29,9 @@ void menuInicial();
 void adivinarPalabra();
 void obtenerPalabra(char *palabra);
 void numeroDePalabrasEnFichero();
-
-
+void jugarWordle();
+bool procesarPalabra(const char* laRespuesta, const char* elIntento);
+void aniadirPalabraFichero();
 
 
 

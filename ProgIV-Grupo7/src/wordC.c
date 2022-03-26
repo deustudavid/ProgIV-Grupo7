@@ -3,6 +3,11 @@
 #include <stdlib.h>
 #include "wordC.h"
 #include <string.h>
+#include <stdbool.h>
+#include <time.h>
+
+
+#define MAX_NUM_PALABRAS 100
 
 sLocalizadorChar comprobarCharConString( char c, char *stringUsu){
 	int i = 0;
@@ -81,6 +86,7 @@ void numeroDePalabrasEnFichero(){ //Cambiar a que devuelva un int (return del co
 	}else{
 		printf("Error al abrir el fichero");
 	}
+
 }
 
 void adivinarPalabra(){
@@ -118,14 +124,10 @@ void menuInicial(){
 		sLocalizadorChar a;
 		switch(num){
 					case 1:
-						printf("Todavia no funciona\n");
-						fflush(stdout);
-						fflush(stdout);
-						adivinarPalabra();
+						jugarWordle();
 						break;
 					case 2:
-						printf("Dos seleccionado");
-						fflush(stdout);
+						aniadirPalabraFichero();
 						break;
 					case 3:
 						printf("Work in progres...");
@@ -151,10 +153,212 @@ void menuInicial(){
 							}
 						break;
 					default:
-						printf("OpciÃ³n incorrecta \n");
+						printf("Opcion incorrecta \n");
 						menuInicial();
 						break;
 		}
+
+
+
+}
+bool procesarPalabra(const char* laRespuesta, const char* elIntento){
+
+	// pista
+	char pista[6]={'-', '-', '-', '-', '-', '\0'};
+	//indicar si la letra en la respuesta está en la pista
+	bool flagsRespuesta[5]={false,false,false,false,false};
+
+	if(strlen(elIntento)==5){ //NOTA: Equivocarse y no poner una palabra de 5 letras implica perder un intento
+
+	// B=Bien= la letra está justo en esa posicion de la palabra
+	for (int i = 0;  i< 5; i++) {
+		if (elIntento[i] == laRespuesta[i]) {
+			pista[i] = 'B';
+			flagsRespuesta[i]=true;
+		}
+
+	}
+
+	// S=Si= la letra en esa posicion está en algun sitio de la palabra
+	for (int i = 0;  i< 5; i++) {
+			if (pista[i] == '-') {
+				for (int j = 0;  j< 5; j++) {
+						if (elIntento[i] == laRespuesta[j] && !flagsRespuesta[j]) {
+							//Hay coincidencia en otra posicion y no se ha usado como pista
+							pista[i] = 'S';
+							flagsRespuesta[j]=true;
+							break;//terminar loop porque no queremos múltiples pistas para la misma letra
+						}
+					}
+			}
+		}
+	}else{
+		printf("¡La palabra tiene que ser de 5 letras!\n");
+		fflush(stdout);
+	}
+	printf("%s\n", pista);
+	fflush(stdout);
+
+	return strcmp(pista, "BBBBB") ==0;//Si coincide con strcmp devuelve 0, significa que se ha acertado la palabra
+}
+
+
+void jugarWordle(){
+	//CARGAR PALABRAS
+		char** listaPalabras= calloc(MAX_NUM_PALABRAS,sizeof(char*));
+		int contadorPalabras=0;
+		char* palabra5letras=malloc(6*sizeof(char));
+		FILE* ficheroPalabras= fopen("palabras.txt", "r");
+
+		while(fscanf(ficheroPalabras, "%s", palabra5letras) != EOF && contadorPalabras < MAX_NUM_PALABRAS){
+			listaPalabras[contadorPalabras]= palabra5letras;
+			contadorPalabras++;
+			palabra5letras=malloc(6*sizeof(char));
+
+		}
+		fclose(ficheroPalabras);
+
+		//EMPEZAR JUEGO Y SELECCIONAR UNA PALABRA RANDOM
+		srand(time(NULL));
+		char* respuesta= listaPalabras[rand()%contadorPalabras];
+
+		// LOOP PARA SEGUIR JUGANDO
+		int numIntentos=6;
+		bool seHaAcertado=false;
+		char* intento= malloc(6*sizeof(char));
+
+		while(numIntentos>0 && !seHaAcertado){
+			//RECIBIR PALABRA INSERTADA POR EL USUARIO
+			printf("\n%d intentos restantes\n", numIntentos);
+			fflush(stdout);
+			printf("Introduce palabra de 5 letras. Presiona ENTER para verificar.\n ");
+			fflush(stdout);
+			gets(intento);
+
+			numIntentos--;
+
+			//VER SI SE ACIERTA O NO LA PALABRA
+			seHaAcertado=procesarPalabra(respuesta, intento);
+
+
+		}
+
+		//MOSTRAR MENSAJE DE FIN DE JUEGO
+		if (seHaAcertado) {
+			int opcion;
+			printf("Felicidades, has acertado la palabra en %d intentos\n", (6-numIntentos));
+			fflush(stdout);
+
+			printf("1= Seguir jugando\n2= Volver al menú\n");
+			fflush(stdout);
+
+			scanf("%d",&opcion);
+			fflush(stdout);
+			fflush(stdin);
+
+
+			switch(opcion){
+								case 1:
+									jugarWordle();
+									break;
+								case 2:
+									menuInicial();
+									break;
+
+								default:
+									printf("Opcion incorrecta \n");
+									break;
+					}
+
+
+		}else{
+			int opcion;
+
+			printf("Has agotado los intentos...La palabra correcta era %s\n", respuesta);
+			fflush(stdout);
+
+			printf("1= Seguir jugando\n2= Volver al menú\n");
+			fflush(stdout);
+			fflush(stdin);
+			scanf("%d",&opcion);
+			fflush(stdin);
+
+
+			switch(opcion){
+							case 1:
+									jugarWordle();
+									break;
+							case 2:
+									menuInicial();
+									break;
+
+							default:
+									printf("Opcion incorrecta \n");
+									break;
+								}
+
+		}
+
+		for (int i = 0;  i< contadorPalabras; i++) {
+			free(listaPalabras[i]);
+		}
+		free(listaPalabras);
+		free(palabra5letras);
+		free(intento);
+
+
+
+}
+void aniadirPalabraFichero(){
+
+	int salir=0;
+	do {
+		char* palabraNueva=malloc(6*sizeof(char));
+
+
+			printf("Introduce una palabra de 5 letras:\n");
+			fflush(stdout);
+			gets(palabraNueva);
+
+			if (strlen(palabraNueva)==5) {
+				FILE *pf;
+
+					pf = fopen("palabras.txt", "a");
+					if(pf != (FILE *)NULL){
+						fprintf(pf,"\n");
+						fputs(palabraNueva,pf);
+
+						int opc;
+						printf("1= Volver al menu\nOtra tecla= seguir\n");
+						fflush(stdout);
+						fflush(stdin);
+						scanf("%d",&opc);
+						fflush(stdin);
+
+						switch(opc){
+								case 1:
+										menuInicial();
+										break;
+								default:
+									break;
+						}
+
+
+					}
+
+					else{
+						printf("Error al abrir el fichero");
+						fflush(stdout);
+					}
+					fclose(pf);
+			} else {
+				printf("Error. La palabra tiene que ser de 5 letras\n");
+				fflush(stdout);
+				aniadirPalabraFichero();
+
+
+			}
+	} while (salir==0);
 
 
 
