@@ -5,9 +5,8 @@
 //#include "wordC.c" es para cuando ejecutemos en Visual Studio Code, que ahi funciona bien el color de las letras
 
 int main(int argc, char **argv) {
-	menuInicial();
 
-
+	logIn();
 
 	return 0;
 

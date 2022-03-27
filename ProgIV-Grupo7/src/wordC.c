@@ -9,6 +9,10 @@
 
 #define MAX_NUM_PALABRAS 100
 
+#define USUARIO "c"
+#define CLAVE "13"
+
+
 sLocalizadorChar comprobarCharConString( char c, char *stringUsu){
 	int i = 0;
 	int longitud;
@@ -105,7 +109,7 @@ void menuInicial(){
 	int num = 0;
 
 
-		printf("** BIENVENIDO A WORDC **\n \n");
+		printf("\n** BIENVENIDO A WORDC **\n \n");
 		fflush( stdin);
 		printf("1. JUGAR \n");
 		fflush( stdin);
@@ -113,10 +117,16 @@ void menuInicial(){
 		fflush( stdin);
 		printf("3. COMPROBAR PUNTOS \n");
 		fflush( stdin);
-		printf("4.Probar la lectura de los ficheros\n5. Prueba comparar 2 strings\n");
+		printf("4.Probar la lectura de los ficheros \n");
 		fflush( stdin);
-		printf("6.Prueba comparar un char en un string \nOpcion: ");
+		printf("5. Prueba comparar 2 strings: \n");
+		fflush(stdin);
+		printf("6.Prueba comparar un char en un string \n");
 		fflush( stdin);
+		printf("7.Cerrar sesion \n");
+		fflush(stdin);
+		printf("8.Salir \nOpcion: ");
+		fflush(stdin);
 		fflush( stdout);
 		scanf("%d", &num);
 		fflush( stdout);
@@ -151,6 +161,12 @@ void menuInicial(){
 							printf("%d ",a.posicion[i]);
 							fflush(stdout);
 							}
+						break;
+					case 7:
+						logIn();
+						break;
+					case 8:
+						system("cls");
 						break;
 					default:
 						printf("Opcion incorrecta \n");
@@ -406,4 +422,58 @@ void aniadirPalabraFichero(){
 
 
 
+}
+
+void logIn(){
+
+	char usuario[51];
+		char clave[51];
+		int intento= 0;
+		//int ingresaAdministrador= 0;
+		int ingresaUsuario=0;
+
+
+			do {
+				system("cls");
+				printf("\nINICIAR SESIÓN\n");
+				printf("\nUSUARIO: ");
+				fflush(stdout);
+
+				fgets(usuario, 51, stdin);
+				usuario[strcspn(usuario, "\r\n")] = 0;
+
+				printf("CONTRASEÑA: ");
+
+				fflush(stdout);
+
+
+				fgets(clave, 51, stdin);
+
+				clave[strcspn(clave, "\r\n")] = 0;
+
+
+
+
+
+				if(strcmp(usuario,USUARIO)==0 && strcmp(clave,CLAVE)==0){
+		            ingresaUsuario=1;
+
+		        }else {
+					printf("\n\t Usuario y/o clave son incorrectos\n");
+					fflush(stdout);
+					intento++;
+					getchar();
+
+				}
+			} while (intento<3 && ingresaUsuario==0);
+
+			if(ingresaUsuario==1){
+
+				menuInicial();
+
+			}else{
+				printf("\n Has sobrepasado el nucmero macximo de intentos\n");
+				fflush(stdout);
+
+			}
 }

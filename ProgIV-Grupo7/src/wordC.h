@@ -32,6 +32,7 @@ void numeroDePalabrasEnFichero();
 void jugarWordle();
 bool procesarPalabra(const char* laRespuesta, const char* elIntento);
 void aniadirPalabraFichero();
+void logIn();
 
 
 
