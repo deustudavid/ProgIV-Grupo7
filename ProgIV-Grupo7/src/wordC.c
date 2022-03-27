@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
-
+#include <windows.h>
 
 #define MAX_NUM_PALABRAS 100
 
@@ -165,12 +165,12 @@ bool procesarPalabra(const char* laRespuesta, const char* elIntento){
 
 	// pista
 	char pista[6]={'-', '-', '-', '-', '-', '\0'};
-	//indicar si la letra en la respuesta está en la pista
+	//indicar si la letra en la respuesta se encuentra en la pista
 	bool flagsRespuesta[5]={false,false,false,false,false};
 
 	if(strlen(elIntento)==5){ //NOTA: Equivocarse y no poner una palabra de 5 letras implica perder un intento
 
-	// B=Bien= la letra está justo en esa posicion de la palabra
+	// B=Bien= la letra esta justo en esa posicion de la palabra
 	for (int i = 0;  i< 5; i++) {
 		if (elIntento[i] == laRespuesta[i]) {
 			pista[i] = 'B';
@@ -179,31 +179,70 @@ bool procesarPalabra(const char* laRespuesta, const char* elIntento){
 
 	}
 
-	// S=Si= la letra en esa posicion está en algun sitio de la palabra
+	// S=Si= la letra en esa posicion esta en algun sitio de la palabra
 	for (int i = 0;  i< 5; i++) {
 			if (pista[i] == '-') {
 				for (int j = 0;  j< 5; j++) {
 						if (elIntento[i] == laRespuesta[j] && !flagsRespuesta[j]) {
 							//Hay coincidencia en otra posicion y no se ha usado como pista
+
 							pista[i] = 'S';
+
 							flagsRespuesta[j]=true;
-							break;//terminar loop porque no queremos múltiples pistas para la misma letra
+
+							break;//terminar loop porque no queremos mï¿½ltiples pistas para la misma letra
 						}
 					}
 			}
 		}
 	}else{
-		printf("¡La palabra tiene que ser de 5 letras!\n");
+		printf("La palabra tiene que ser de 5 letras!\n");
 		fflush(stdout);
 	}
-	printf("%s\n", pista);
-	fflush(stdout);
+
+
+	for (int i = 0; i < strlen(pista); i++)
+
+	{
+
+		if (pista[i]=='B')
+		{
+			HANDLE consola=GetStdHandle(STD_OUTPUT_HANDLE);
+			SetConsoleTextAttribute(consola,2);
+			printf("%c", elIntento[i]);
+
+
+
+
+		}if (pista[i]=='S'){
+			HANDLE consola=GetStdHandle(STD_OUTPUT_HANDLE);
+			SetConsoleTextAttribute(consola,6);
+			printf("%c", elIntento[i]);
+
+
+
+
+		}if (pista[i]=='-'){
+			HANDLE consola=GetStdHandle(STD_OUTPUT_HANDLE);
+			SetConsoleTextAttribute(consola,7);
+			printf("%c", elIntento[i]);
+
+
+
+
+		}
+
+	}
+
+
 
 	return strcmp(pista, "BBBBB") ==0;//Si coincide con strcmp devuelve 0, significa que se ha acertado la palabra
 }
 
 
 void jugarWordle(){
+	HANDLE consola=GetStdHandle(STD_OUTPUT_HANDLE);
+
 	//CARGAR PALABRAS
 		char** listaPalabras= calloc(MAX_NUM_PALABRAS,sizeof(char*));
 		int contadorPalabras=0;
@@ -229,6 +268,7 @@ void jugarWordle(){
 
 		while(numIntentos>0 && !seHaAcertado){
 			//RECIBIR PALABRA INSERTADA POR EL USUARIO
+			SetConsoleTextAttribute(consola,7);
 			printf("\n%d intentos restantes\n", numIntentos);
 			fflush(stdout);
 			printf("Introduce palabra de 5 letras. Presiona ENTER para verificar.\n ");
@@ -246,10 +286,12 @@ void jugarWordle(){
 		//MOSTRAR MENSAJE DE FIN DE JUEGO
 		if (seHaAcertado) {
 			int opcion;
-			printf("Felicidades, has acertado la palabra en %d intentos\n", (6-numIntentos));
+			SetConsoleTextAttribute(consola,7);
+
+			printf("\nFelicidades, has acertado la palabra en %d intentos\n", (6-numIntentos));
 			fflush(stdout);
 
-			printf("1= Seguir jugando\n2= Volver al menú\n");
+			printf("1= Seguir jugando\n2= Volver al menu\n");
 			fflush(stdout);
 
 			scanf("%d",&opcion);
@@ -273,11 +315,13 @@ void jugarWordle(){
 
 		}else{
 			int opcion;
+			SetConsoleTextAttribute(consola,7);
 
-			printf("Has agotado los intentos...La palabra correcta era %s\n", respuesta);
+
+			printf("\nHas agotado los intentos...La palabra correcta era %s\n", respuesta);
 			fflush(stdout);
 
-			printf("1= Seguir jugando\n2= Volver al menú\n");
+			printf("1= Seguir jugando\n2= Volver al menu\n");
 			fflush(stdout);
 			fflush(stdin);
 			scanf("%d",&opcion);
