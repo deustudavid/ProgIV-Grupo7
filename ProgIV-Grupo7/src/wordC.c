@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include <windows.h>
+#include <ctype.h>
 
 #define MAX_NUM_PALABRAS 100
 
@@ -281,7 +282,6 @@ void jugarWordle(){
 		int numIntentos=6;
 		bool seHaAcertado=false;
 		char* intento= malloc(6*sizeof(char));
-
 		while(numIntentos>0 && !seHaAcertado){
 			//RECIBIR PALABRA INSERTADA POR EL USUARIO
 			SetConsoleTextAttribute(consola,7);
@@ -290,6 +290,11 @@ void jugarWordle(){
 			printf("Introduce palabra de 5 letras. Presiona ENTER para verificar.\n ");
 			fflush(stdout);
 			gets(intento);
+
+			//CONVERTIR LA PALABRA EN MINUSCULA
+			for(int i = 0; intento[i]; i++){
+				intento[i] = tolower(intento[i]);
+			}
 
 			numIntentos--;
 
@@ -435,14 +440,14 @@ void logIn(){
 
 			do {
 				system("cls");
-				printf("\nINICIAR SESIÓN\n");
+				printf("\nINICIAR SESIï¿½N\n");
 				printf("\nUSUARIO: ");
 				fflush(stdout);
 
 				fgets(usuario, 51, stdin);
 				usuario[strcspn(usuario, "\r\n")] = 0;
 
-				printf("CONTRASEÑA: ");
+				printf("CONTRASEï¿½A: ");
 
 				fflush(stdout);
 
