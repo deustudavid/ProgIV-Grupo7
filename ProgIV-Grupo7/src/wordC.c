@@ -181,37 +181,38 @@ void menuInicial(){
 bool procesarPalabra(const char* laRespuesta, const char* elIntento){
 
 	// pista
-	char pista[6]={'-', '-', '-', '-', '-', '\0'};
+	//char pista[6]={'-', '-', '-', '-', '-', '\0'};
+	char pista[]="-----";
 	//indicar si la letra en la respuesta se encuentra en la pista
 	bool flagsRespuesta[5]={false,false,false,false,false};
 
 	if(strlen(elIntento)==5){ //NOTA: Equivocarse y no poner una palabra de 5 letras implica perder un intento
 
-	// B=Bien= la letra esta justo en esa posicion de la palabra
-	for (int i = 0;  i< 5; i++) {
-		if (elIntento[i] == laRespuesta[i]) {
-			pista[i] = 'B';
-			flagsRespuesta[i]=true;
-		}
-
-	}
-
-	// S=Si= la letra en esa posicion esta en algun sitio de la palabra
-	for (int i = 0;  i< 5; i++) {
-			if (pista[i] == '-') {
-				for (int j = 0;  j< 5; j++) {
-						if (elIntento[i] == laRespuesta[j] && !flagsRespuesta[j]) {
-							//Hay coincidencia en otra posicion y no se ha usado como pista
-
-							pista[i] = 'S';
-
-							flagsRespuesta[j]=true;
-
-							break;//terminar loop porque no queremos m�ltiples pistas para la misma letra
-						}
-					}
+		// B=Bien= la letra esta justo en esa posicion de la palabra
+		for (int i = 0;  i< 5; i++) {
+			if (elIntento[i] == laRespuesta[i]) {
+				pista[i] = 'B';
+				flagsRespuesta[i]=true;
 			}
+
 		}
+
+		// S=Si= la letra en esa posicion esta en algun sitio de la palabra
+		for (int i = 0;  i< 5; i++) {
+				if (pista[i] == '-') {
+					for (int j = 0;  j< 5; j++) {
+							if (elIntento[i] == laRespuesta[j] && !flagsRespuesta[j]) {
+								//Hay coincidencia en otra posicion y no se ha usado como pista
+
+								pista[i] = 'S';
+
+								flagsRespuesta[j]=true;
+
+								break;//terminar loop porque no queremos m�ltiples pistas para la misma letra
+							}
+						}
+				}
+			}
 	}else{
 		printf("La palabra tiene que ser de 5 letras!\n");
 		fflush(stdout);
@@ -231,7 +232,7 @@ bool procesarPalabra(const char* laRespuesta, const char* elIntento){
 
 
 
-		}if (pista[i]=='S'){
+		}else if (pista[i]=='S'){
 			HANDLE consola=GetStdHandle(STD_OUTPUT_HANDLE);
 			SetConsoleTextAttribute(consola,6);
 			printf("%c", elIntento[i]);
@@ -239,7 +240,7 @@ bool procesarPalabra(const char* laRespuesta, const char* elIntento){
 
 
 
-		}if (pista[i]=='-'){
+		}else if (pista[i]=='-'){
 			HANDLE consola=GetStdHandle(STD_OUTPUT_HANDLE);
 			SetConsoleTextAttribute(consola,7);
 			printf("%c", elIntento[i]);
@@ -261,14 +262,17 @@ void jugarWordle(){
 	HANDLE consola=GetStdHandle(STD_OUTPUT_HANDLE);
 
 	//CARGAR PALABRAS
-		char** listaPalabras= calloc(MAX_NUM_PALABRAS,sizeof(char*));
-		int contadorPalabras=0;
+		//char** listaPalabras= calloc(MAX_NUM_PALABRAS,sizeof(char*));
+		//int contadorPalabras=0;
 		char* palabra5letras=malloc(6*sizeof(char));
 		FILE* ficheroPalabras= fopen("palabras.txt", "r");
 
-		while(fscanf(ficheroPalabras, "%s", palabra5letras) != EOF && contadorPalabras < MAX_NUM_PALABRAS){
-			listaPalabras[contadorPalabras]= palabra5letras;
-			contadorPalabras++;
+		tListaPalabras lp ;
+		lp.listaPalabras = calloc(MAX_NUM_PALABRAS,sizeof(char*));
+		lp.contadorPalabras = 0;
+		while(fscanf(ficheroPalabras, "%s", palabra5letras) != EOF && lp.contadorPalabras < MAX_NUM_PALABRAS){
+			lp.listaPalabras[lp.contadorPalabras]= palabra5letras;
+			lp.contadorPalabras++;
 			palabra5letras=malloc(6*sizeof(char));
 
 		}
@@ -276,7 +280,7 @@ void jugarWordle(){
 
 		//EMPEZAR JUEGO Y SELECCIONAR UNA PALABRA RANDOM
 		srand(time(NULL));
-		char* respuesta= listaPalabras[rand()%contadorPalabras];
+		char* respuesta= lp.listaPalabras[rand()%lp.contadorPalabras];
 
 		// LOOP PARA SEGUIR JUGANDO
 		int numIntentos=6;
@@ -292,7 +296,7 @@ void jugarWordle(){
 			gets(intento);
 
 			//CONVERTIR LA PALABRA EN MINUSCULA
-			for(int i = 0; intento[i]; i++){
+			for(int i = 0; i<strlen(intento); i++){
 				intento[i] = tolower(intento[i]);
 			}
 
@@ -364,16 +368,17 @@ void jugarWordle(){
 
 		}
 
-		for (int i = 0;  i< contadorPalabras; i++) {
-			free(listaPalabras[i]);
+		for (int i = 0;  i< lp.contadorPalabras; i++) {
+			free(lp.listaPalabras[i]);
 		}
-		free(listaPalabras);
+		free(lp.listaPalabras);
 		free(palabra5letras);
 		free(intento);
 
 
 
 }
+//Añadir una función para el menú que aparece después de jugar
 void aniadirPalabraFichero(){
 
 	int salir=0;
@@ -429,7 +434,7 @@ void aniadirPalabraFichero(){
 
 }
 
-void logIn(){
+int logIn(){
 
 	char usuario[51];
 		char clave[51];
@@ -445,7 +450,7 @@ void logIn(){
 				fflush(stdout);
 
 				fgets(usuario, 51, stdin);
-				usuario[strcspn(usuario, "\r\n")] = 0;
+				usuario[strcspn(usuario, "\r\n")] = 0; //Quitamos el salto de línea que fgets introduce en la cadena
 
 				printf("CONTRASE�A: ");
 
@@ -472,7 +477,7 @@ void logIn(){
 				}
 			} while (intento<3 && ingresaUsuario==0);
 
-			if(ingresaUsuario==1){
+			/*if(ingresaUsuario==1){
 
 				menuInicial();
 
@@ -480,5 +485,11 @@ void logIn(){
 				printf("\n Has sobrepasado el nucmero macximo de intentos\n");
 				fflush(stdout);
 
+			}*/
+			if(!ingresaUsuario){
+				printf("\n Has sobrepasado el nucmero macximo de intentos\n");
+				fflush(stdout);
+
 			}
+			return ingresaUsuario;
 }

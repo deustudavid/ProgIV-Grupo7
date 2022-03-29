@@ -22,6 +22,17 @@ typedef struct
 	int nPosicion;
 }sLocalizadorChar;
 
+typedef struct{
+	char** listaPalabras;
+	int contadorPalabras;
+
+}tListaPalabras;
+
+//Mirar esta posibilidad
+typedef struct {
+	char palabra[6];
+	char tema[10];
+}tPalabra;
 sLocalizadorChar comprobarCharConString(char c,char *string);
 void comprobarStringConString(char *stringUsuario, char *stringPalabra);
 void pruebaLecturaFicheros();
@@ -32,7 +43,7 @@ void numeroDePalabrasEnFichero();
 void jugarWordle();
 bool procesarPalabra(const char* laRespuesta, const char* elIntento);
 void aniadirPalabraFichero();
-void logIn();
+int logIn();
 
 
 
