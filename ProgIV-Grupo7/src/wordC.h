@@ -15,12 +15,6 @@ typedef struct
 	int intentos;
 }sPuntuacion;
 
-typedef struct
-{
-	char caracter;
-	int posicion[4];
-	int nPosicion;
-}sLocalizadorChar;
 
 typedef struct{
 	char** listaPalabras;
@@ -33,17 +27,25 @@ typedef struct {
 	char palabra[6];
 	char tema[10];
 }tPalabra;
-sLocalizadorChar comprobarCharConString(char c,char *string);
-void comprobarStringConString(char *stringUsuario, char *stringPalabra);
-void pruebaLecturaFicheros();
+
+typedef struct{
+	char * usuario;
+	char * contrasena;
+}sUsuario;
+
+typedef struct {
+	sUsuario * listaAdministradores;
+	int numeroAdministadores;
+}eAdministradores;
+
+
 void menuInicial();
-void adivinarPalabra();
-void obtenerPalabra(char *palabra);
-void numeroDePalabrasEnFichero();
+void numeroDePalabrasEnFichero(char * fichero);
 void jugarWordle();
 bool procesarPalabra(const char* laRespuesta, const char* elIntento);
 void aniadirPalabraFichero();
 int logIn();
+void esAdministrador(char * usuario, char * contra,eAdministradores admins);
 
 
 
