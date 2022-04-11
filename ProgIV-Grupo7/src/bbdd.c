@@ -6,7 +6,7 @@
 void crearTablas(sqlite3 *db){
 	sqlite3_stmt *stmt;
 
-	char sql[] = "create table IF NOT EXISTS usuario(nombre varchar2(100) PRIMARY KEY NOT NULL, contrasenia varchar2(20) )";
+	char sql[] = "create table IF NOT EXISTS puntuacion(usuario varchar2(100) PRIMARY KEY NOT NULL, palabra varchar2(20),intentos int)";
 	sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) ;
 	sqlite3_step(stmt); //Ejecuta la sentencia
 	sqlite3_finalize(stmt);

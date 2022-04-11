@@ -9,13 +9,13 @@
 
 int main(int argc, char **argv) {
 	sqlite3 *db;
-	int result=sqlite3_open("bd.db",&db);
+	int result=sqlite3_open("bd.db",db);
 	if (result != SQLITE_OK)
 	{
 		printf("Error al abrir la base de datos\n");
 		fflush(stdin);
 	}
-	crearTablas(db);
+	//mostrarUsuarios(db);
 
 	if(logIn()){
 		menuInicial();
