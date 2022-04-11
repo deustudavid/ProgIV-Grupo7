@@ -39,7 +39,8 @@ typedef struct {
 }eAdministradores;
 
 
-void menuInicial();
+void menuUsuario();
+void menuAdministrador();
 void numeroDePalabrasEnFichero(char * fichero);
 void jugarWordle();
 bool procesarPalabra(const char* laRespuesta, const char* elIntento);

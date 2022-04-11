@@ -13,22 +13,70 @@
 #define USUARIO "c"
 #define CLAVE "13"
 
-void menuInicial(){
+void menuUsuario(){
 
 	int num = 0;
-		printf("\n** BIENVENIDO A WORDC **\n \n");
+			printf("\n** BIENVENIDO A WORDC **\n \n");
+			fflush( stdin);
+			printf("1. JUGAR \n");
+			fflush( stdin);
+			printf("2. ANIADIR PALABRA \n");
+			fflush( stdin);
+			printf("3. COMPROBAR PUNTOS \n");
+			fflush( stdin);
+			printf("4.MODIFICAR INFORMACION PERSONAL \n");
+			fflush( stdin);
+			printf("4.Cerrar sesion \n");
+			fflush(stdin);
+			printf("5.Salir \nOpcion: ");
+			fflush(stdin);
+			fflush( stdout);
+			scanf("%d", &num);
+			fflush( stdout);
+			fflush( stdin);
+			switch(num){
+						case 1:
+							jugarWordle();
+							break;
+						case 2:
+							aniadirPalabraFichero();
+							break;
+						case 3:
+							printf("Work in progres...");
+							fflush(stdout);
+							break;
+						case 4:
+							logIn();
+							break;
+						case 5:
+							system("cls");
+							break;
+						default:
+							printf("Opcion incorrecta \n");
+							menuUsuario();
+							break;
+		}
+}
+
+void menuAdministrador(){
+
+	int num = 0;
+		printf("\n** MENU ADMINISTRADOR **\n \n");
 		fflush( stdin);
 		printf("1. JUGAR \n");
 		fflush( stdin);
-		printf("2. ANIADIR PALABRA \n");
+		printf("2. ANIADIR PALABRA (Administrativa)\n");
 		fflush( stdin);
-		printf("3. COMPROBAR PUNTOS \n");
+		printf("3. COMPROBAR ESTADISTICAS \n");
 		fflush( stdin);
-		printf("4.Probar la lectura de los ficheros \n");
+		printf("4.ABRIR MENU USUARIO \n");
 		fflush( stdin);
-		printf("7.Cerrar sesion \n");
+	/*	printf("5.BORRAR PALABRAS \n");
+		fflush( stdin);  */
+		printf("6.Cerrar sesion \n");
 		fflush(stdin);
-		printf("8.Salir \nOpcion: ");
+		printf("7.Salir \nOpcion: ");
+
 		fflush(stdin);
 		fflush( stdout);
 		scanf("%d", &num);
@@ -42,30 +90,26 @@ void menuInicial(){
 						aniadirPalabraFichero();
 						break;
 					case 3:
-						printf("Work in progres...");
+						printf("Creandose las estadisticas...");
 						fflush(stdout);
 						break;
 					case 4:
-						numeroDePalabrasEnFichero("palabras.txt");
-						numeroDePalabrasEnFichero("administradores.txt");
+						menuUsuario();
 						break;
 					case 5:
 						break;
 					case 6:
-						break;
-					case 7:
 						logIn();
 						break;
-					case 8:
+					case 7:
 						system("cls");
 						break;
 					default:
 						printf("Opcion incorrecta \n");
-						menuInicial();
+						menuAdministrador();
 						break;
 		}
 }
-
 
 void numeroDePalabrasEnFichero(char * fichero){ //Cambiar a que devuelva un int (return del cont)
 
@@ -170,7 +214,7 @@ void jugarWordle(){
 									jugarWordle();
 									break;
 								case 2:
-									menuInicial();
+									menuUsuario();
 									break;
 
 								default:
@@ -199,7 +243,7 @@ void jugarWordle(){
 									jugarWordle();
 									break;
 							case 2:
-									menuInicial();
+									menuUsuario();
 									break;
 
 							default:
@@ -248,7 +292,7 @@ void aniadirPalabraFichero(){
 
 						switch(opc){
 								case 1:
-										menuInicial();
+										menuUsuario();
 										break;
 								default:
 									break;
@@ -361,13 +405,12 @@ int logIn(){
 		//int ingresaAdministrador= 0;
 	int ingresaUsuario=0;
 	do {
-		system("cls");
-		printf("\nINICIAR SESI�N\n");
+		printf("\nINICIAR SESIÓN\n");
 		printf("\nUSUARIO: ");
 		fflush(stdout);
 		fgets(usuario, 51, stdin);
 		usuario[strcspn(usuario, "\r\n")] = 0; //Quitamos el salto de línea que fgets introduce en la cadena
-		printf("CONTRASE�A: ");
+		printf("CONTRASENA: ");
 		fflush(stdout);
 		fgets(clave, 51, stdin);
 		clave[strcspn(clave, "\r\n")] = 0;
@@ -381,7 +424,7 @@ int logIn(){
 				}
 			} while (intento<3 && ingresaUsuario==0);
 			if(!ingresaUsuario){
-				printf("\n Has sobrepasado el numero macximo de intentos\n");
+				printf("\n Has sobrepasado el numero maximo de intentos\n");
 				fflush(stdout);
 
 			}
