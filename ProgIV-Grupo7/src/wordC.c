@@ -59,6 +59,24 @@ void menuUsuario(){
 		}
 }
 
+int menuInicio(){
+
+    int num = 0;
+    printf("\n BIENVENIDO A WORDC \n \n");
+    fflush( stdin);
+    printf("1. INICIAR SESION \n");
+    fflush( stdin);
+    printf("2. REGISTRARSE \n");
+    fflush( stdin);
+    printf("3.Salir \n Opcion: ");
+    fflush(stdin);
+    fflush( stdout);
+    scanf("%d", &num);
+    fflush( stdout);
+    fflush( stdin);
+    return num;
+}
+
 void menuAdministrador(){
 
 	int num = 0;

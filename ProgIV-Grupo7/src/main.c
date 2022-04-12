@@ -18,14 +18,35 @@ int main(int argc, char **argv) {
 		fflush(stdin);
 	}
 	//mostrarUsuarios(db);
+	do{
+		resultado = 4;
+		resultado = menuInicio();
+			switch(resultado){
+				case 1: break;
+			//	case 2: menuRegistro(); break;
+				case 3: exit(0); break;
+				default: printf("No es una opcion valida\n"); fflush(stdout); resultado = 4;
+			}
+
+		}while(resultado == 4);
+
+
+	do{
 	resultado = logIn(db,admins);
-	switch(resultado){
-		case 0: printf("ERROR! Usuario desconocido\n"); fflush(stdout); break;
-		case 1: printf("ERROR! Contraseña incorrecta\n"); fflush(stdout); break;
-		case 2: menuUsuario(); break;
-		case 3: menuAdministrador(); break;
-	}
+		switch(resultado){
+			case 0: printf("ERROR! Usuario desconocido\n"); fflush(stdout); break;
+			case 1: printf("ERROR! Contraseña incorrecta\n"); fflush(stdout); break;
+			case 2: menuUsuario(); break;
+			case 3: menuAdministrador(); break;
+		}
+
+	}while(resultado < 2);
+
+
+
 	return 0;
 
 }
+
+
 
