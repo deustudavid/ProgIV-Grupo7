@@ -1,8 +1,4 @@
-Inigo
-Ane
-Diego
-David
-Marian
-Asier
-Alazne
-Maria
+Inigo admin
+Ane admin
+Diego admin
+David admin

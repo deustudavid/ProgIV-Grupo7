@@ -23,14 +23,12 @@ int main(int argc, char **argv) {
 		resultado = menuInicio();
 			switch(resultado){
 				case 1: break;
-			//	case 2: menuRegistro(); break;
+				case 2: menuRegistro(db); break;
 				case 3: exit(0); break;
 				default: printf("No es una opcion valida\n"); fflush(stdout); resultado = 4;
 			}
 
 		}while(resultado == 4);
-
-
 	do{
 	resultado = logIn(db,admins);
 		switch(resultado){

@@ -5,6 +5,7 @@
  *      Author: susil
  */
 #include <stdbool.h>
+#include "sqlite3.h"
 
 #ifndef WORDC_H_
 #define WORDC_H_
@@ -41,12 +42,13 @@ typedef struct {
 
 void menuUsuario();
 void menuAdministrador();
-void numeroDePalabrasEnFichero(char * fichero);
+void menuRegistro(sqlite3 *db);
+int numeroDePalabrasEnFichero(char * fichero);
 void jugarWordle();
 bool procesarPalabra(const char* laRespuesta, const char* elIntento);
 void aniadirPalabraFichero();
 int logIn();
-int esAdministrador(char * usuario, char * contra,eAdministradores admins);
+int esAdministrador(char * usuario, char * contra);
 
 
 

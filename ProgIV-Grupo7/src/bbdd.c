@@ -79,13 +79,15 @@ int comprobarUsuarios(sqlite3 *db, char*nombre, char *contra){
 	resul = sqlite3_step(stmt);
 	if(resul == SQLITE_ROW){
 		strcpy(con, (char*)sqlite3_column_text(stmt, 1));
-		printf("%s\n",con);fflush(stdout);
 		if(strcmp(contra,con)==0){
 			resultado = 2;
 		}else{
 			resultado = 1;
 		}
+	}else{
+		resultado = 3;
 	}
+
 
 	sqlite3_finalize(stmt);
 	return resultado;

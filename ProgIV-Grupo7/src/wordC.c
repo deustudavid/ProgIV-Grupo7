@@ -23,13 +23,9 @@ void menuUsuario(){
 			fflush( stdin);
 			printf("2. ANIADIR PALABRA \n");
 			fflush( stdin);
-			printf("3. COMPROBAR PUNTOS \n");
-			fflush( stdin);
-			printf("4.MODIFICAR INFORMACION PERSONAL \n");
-			fflush( stdin);
-			printf("4.Cerrar sesion \n");
+			printf("3.Cerrar sesion \n");
 			fflush(stdin);
-			printf("5.Salir \nOpcion: ");
+			printf("4.Salir \nOpcion: ");
 			fflush(stdin);
 			fflush( stdout);
 			scanf("%d", &num);
@@ -43,13 +39,9 @@ void menuUsuario(){
 							aniadirPalabraFichero();
 							break;
 						case 3:
-							printf("Work in progres...");
-							fflush(stdout);
-							break;
-						case 4:
 							logIn();
 							break;
-						case 5:
+						case 4:
 							system("cls");
 							break;
 						default:
@@ -130,7 +122,7 @@ void menuAdministrador(){
 		}
 }
 
-void numeroDePalabrasEnFichero(char * fichero){ //Cambiar a que devuelva un int (return del cont)
+int numeroDePalabrasEnFichero(char * fichero){ //Cambiar a que devuelva un int (return del cont)
 
 	int cont = 0;
 	char ca;
@@ -154,7 +146,7 @@ void numeroDePalabrasEnFichero(char * fichero){ //Cambiar a que devuelva un int 
 	}else{
 		printf("Error al abrir el fichero");
 	}
-
+	return cont;
 }
 
 
@@ -289,7 +281,6 @@ void aniadirPalabraFichero(){
 	do {
 		char* palabraNueva=malloc(6*sizeof(char));
 
-
 			printf("Introduce una palabra de 5 letras:\n");
 			fflush(stdout);
 			gets(palabraNueva);
@@ -299,27 +290,15 @@ void aniadirPalabraFichero(){
 
 					pf = fopen("palabras.txt", "a");
 					if(pf != (FILE *)NULL){
-						fprintf(pf,"\n");
+						//fprintf(pf,"\n");
 						fputs(palabraNueva,pf);
+						fprintf(pf,"\n");
 
-						int opc;
-						printf("1= Volver al menu\nOtra tecla= seguir\n");
+						printf("Palabra anadida correctamente\n");
 						fflush(stdout);
-						fflush(stdin);
-						scanf("%d",&opc);
-						fflush(stdin);
-
-						switch(opc){
-								case 1:
-										menuUsuario();
-										break;
-								default:
-									break;
-						}
-
-
+						menuUsuario();
+						salir = 1;
 					}
-
 					else{
 						printf("Error al abrir el fichero");
 						fflush(stdout);
@@ -329,8 +308,6 @@ void aniadirPalabraFichero(){
 				printf("Error. La palabra tiene que ser de 5 letras\n");
 				fflush(stdout);
 				aniadirPalabraFichero();
-
-
 			}
 	} while (salir==0);
 
@@ -420,42 +397,20 @@ bool procesarPalabra(const char* laRespuesta, const char* elIntento){
 int logIn(sqlite3 *db,eAdministradores admins){
 	char usuario[51];
 	char clave[51];
-	int intento= 0,resultado;
-		//int ingresaAdministrador= 0;
-	int ingresaUsuario=0;
-	//do {
+	int resultado;
 		printf("\nINICIAR SESIÓN\n");
 		printf("\nUSUARIO: ");
 		fflush(stdout);
-		//fgets(usuario, 51, stdin);
-		//usuario[strcspn(usuario, "\r\n")] = 0; //Quitamos el salto de línea que fgets introduce en la cadena
 		fflush(stdin);
 		gets(usuario);
 		printf("CONTRASENA: ");
 		fflush(stdout);
 		fflush(stdin);
-		//fgets(clave, 51, stdin);
-		//clave[strcspn(clave, "\r\n")] = 0;
 		gets(clave);
-		/*if(strcmp(usuario,USUARIO)==0 && strcmp(clave,CLAVE)==0){
-		   ingresaUsuario=1;
-		   }else {
-			   printf("\n\t Usuario y/o clave son incorrectos\n");
-			   fflush(stdout);
-			   intento++;
-			   getchar();
-				}
-			} while (intento<3 && ingresaUsuario==0);
-			if(!ingresaUsuario){
-				printf("\n Has sobrepasado el numero maximo de intentos\n");
-				fflush(stdout);
 
-			}
-
-			return ingresaUsuario;*/
 		resultado = comprobarUsuarios(db, usuario, clave);
 		if(resultado == 0){
-			if(esAdministrador(usuario, clave, admins)){
+			if(esAdministrador(usuario, clave)){
 				resultado = 3;
 			}
 		}
@@ -463,6 +418,50 @@ int logIn(sqlite3 *db,eAdministradores admins){
 		/*Devuelve un 0 si el usuario no existe, un 1 si existe pero la contraseña no es correcta,
 		 * un 2 para nombre y con correctos y un 3 si es admin*/
 }
-int esAdministrador(char * usuario, char * contra,eAdministradores admins){
+int esAdministrador(char * usuario, char * contra){
+	int i;
+	eAdministradores admins;
+	admins.numeroAdministadores = numeroDePalabrasEnFichero("administradores.txt");
+	admins.listaAdministradores = (sUsuario*)malloc(admins.numeroAdministadores*sizeof(sUsuario));
+
+			FILE* pf = fopen("administradores.txt", "r");
+
+			if(pf != (FILE*)NULL){
+				for(i=0;i<admins.numeroAdministadores;i++){
+					fscanf(pf,"%s%s",admins.listaAdministradores[i].usuario,admins.listaAdministradores[i].contrasena);
+				}
+			}
+			for(i=0;i<admins.numeroAdministadores;i++){
+				printf("%s %s", admins.listaAdministradores[i].usuario,admins.listaAdministradores[i].contrasena);
+			}
+				fclose(pf);
+
 	return 0;
 }
+
+void menuRegistro(sqlite3 *db){
+	char usuario[51];
+	char clave[51];
+	int resultado = 0;
+
+	printf("\nUSUARIO: ");
+	fflush(stdout);
+	fflush(stdin);
+	gets(usuario);
+	printf("CONTRASENA: ");
+	fflush(stdout);
+	fflush(stdin);
+	gets(clave);
+	resultado = comprobarUsuarios(db, usuario, clave);
+	if(resultado < 3){
+		printf("Ya existe un usuario con ese nombre\n");
+		fflush(stdout);
+		menuRegistro(db);
+	}
+	insertarUsuario(db ,usuario, clave);
+	printf("Usuario creado correctamente\n");
+	fflush(stdout);
+}
+
+
+
