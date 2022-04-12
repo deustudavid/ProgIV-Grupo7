@@ -7,6 +7,7 @@
 #include <time.h>
 #include <windows.h>
 #include <ctype.h>
+#include "bbdd.h"
 
 #define MAX_NUM_PALABRAS 100
 
@@ -398,23 +399,27 @@ bool procesarPalabra(const char* laRespuesta, const char* elIntento){
 	return strcmp(pista, "BBBBB") ==0;//Si coincide con strcmp devuelve 0, significa que se ha acertado la palabra
 }
 
-int logIn(){
+int logIn(sqlite3 *db,eAdministradores admins){
 	char usuario[51];
 	char clave[51];
-	int intento= 0;
+	int intento= 0,resultado;
 		//int ingresaAdministrador= 0;
 	int ingresaUsuario=0;
-	do {
+	//do {
 		printf("\nINICIAR SESIÓN\n");
 		printf("\nUSUARIO: ");
 		fflush(stdout);
-		fgets(usuario, 51, stdin);
-		usuario[strcspn(usuario, "\r\n")] = 0; //Quitamos el salto de línea que fgets introduce en la cadena
+		//fgets(usuario, 51, stdin);
+		//usuario[strcspn(usuario, "\r\n")] = 0; //Quitamos el salto de línea que fgets introduce en la cadena
+		fflush(stdin);
+		gets(usuario);
 		printf("CONTRASENA: ");
 		fflush(stdout);
-		fgets(clave, 51, stdin);
-		clave[strcspn(clave, "\r\n")] = 0;
-		if(strcmp(usuario,USUARIO)==0 && strcmp(clave,CLAVE)==0){
+		fflush(stdin);
+		//fgets(clave, 51, stdin);
+		//clave[strcspn(clave, "\r\n")] = 0;
+		gets(clave);
+		/*if(strcmp(usuario,USUARIO)==0 && strcmp(clave,CLAVE)==0){
 		   ingresaUsuario=1;
 		   }else {
 			   printf("\n\t Usuario y/o clave son incorrectos\n");
@@ -429,9 +434,17 @@ int logIn(){
 
 			}
 
-			return ingresaUsuario;
+			return ingresaUsuario;*/
+		resultado = comprobarUsuarios(db, usuario, clave);
+		if(resultado == 0){
+			if(esAdministrador(usuario, clave, admins)){
+				resultado = 3;
+			}
+		}
+		return resultado;
+		/*Devuelve un 0 si el usuario no existe, un 1 si existe pero la contraseña no es correcta,
+		 * un 2 para nombre y con correctos y un 3 si es admin*/
 }
-void esAdministrador(char * usuario, char * contra,eAdministradores admins){
-	admins.numeroAdministadores = 5;
-
+int esAdministrador(char * usuario, char * contra,eAdministradores admins){
+	return 0;
 }

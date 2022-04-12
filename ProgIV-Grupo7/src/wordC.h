@@ -29,8 +29,8 @@ typedef struct {
 }tPalabra;
 
 typedef struct{
-	char * usuario;
-	char * contrasena;
+	char  usuario[100];
+	char  contrasena[20];
 }sUsuario;
 
 typedef struct {
@@ -46,7 +46,7 @@ void jugarWordle();
 bool procesarPalabra(const char* laRespuesta, const char* elIntento);
 void aniadirPalabraFichero();
 int logIn();
-void esAdministrador(char * usuario, char * contra,eAdministradores admins);
+int esAdministrador(char * usuario, char * contra,eAdministradores admins);
 
 
 

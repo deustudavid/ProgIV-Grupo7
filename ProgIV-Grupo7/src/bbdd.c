@@ -11,6 +11,10 @@ void crearTablas(sqlite3 *db){
 	sqlite3_step(stmt); //Ejecuta la sentencia
 	sqlite3_finalize(stmt);
 	
+	char sql2[] = "create table IF NOT EXISTS usuario(nom varchar2(100) PRIMARY KEY NOT NULL, con varchar2(20))";
+	sqlite3_prepare_v2(db, sql2, -1, &stmt, NULL) ;
+	sqlite3_step(stmt); //Ejecuta la sentencia
+	sqlite3_finalize(stmt);
 
 }
 
@@ -19,7 +23,7 @@ void insertarUsuario(sqlite3 *db ,char *nombre, char *contrasenia){
 
 	char sql[100];
 
-	sprintf(sql, "insert into usuario values(%s, %s)",nombre,contrasenia);
+	sprintf(sql, "insert into usuario values('%s', '%s')",nombre,contrasenia);
 	sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) ;
 	sqlite3_step(stmt);
 	sqlite3_finalize(stmt);
@@ -30,7 +34,7 @@ void insertarPuntuacion(sqlite3 *db ,char *nombre,char * palabra, int intentos[1
 
 	char sql[100];
 
-	sprintf(sql, "insert into puntuación values(%s, %s, %d)",nombre,palabra, &intentos);
+	sprintf(sql, "insert into puntuación values('%s', '%s', %d)",nombre,palabra, &intentos);
 	sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) ;
 	sqlite3_step(stmt);
 	sqlite3_finalize(stmt);
@@ -39,33 +43,54 @@ void insertarPuntuacion(sqlite3 *db ,char *nombre,char * palabra, int intentos[1
 void borrarUsuario(sqlite3 *db, char *nombre){
 	sqlite3_stmt *stmt;
 	char sql[100];
-	sprintf(sql, "delete from usuario where nombre = %s",nombre);
+	sprintf(sql, "delete from usuario where nombre = '%s'",nombre);
 	sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) ;
 	sqlite3_step(stmt);
 	sqlite3_finalize(stmt);
 }
 
 void mostrarUsuarios(sqlite3 *db){
-	int resul,nombre;
+	int resul;
 	sqlite3_stmt *stmt;
-	char sql[100],*nom,*cad;
-	char letra;
+	char sql[100],nom[101] ,con[21];
 
 	sprintf(sql,"select * from usuario");
 	sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) ;
 
 	do{
 		resul = sqlite3_step(stmt);
-		nombre = sqlite3_column_int(stmt, 0);
-		strcpy(nom, (char*)sqlite3_column_text(stmt, 1));
-		
-		printf("%d %s\n",nombre,nom);
+		strcpy(nom,(char*)sqlite3_column_text(stmt, 0));
+		strcpy(con, (char*)sqlite3_column_text(stmt, 1));
+		printf("%s %s\n",nom,con); fflush(stdout);
 	}while(resul == SQLITE_ROW);
 
 
 	sqlite3_finalize(stmt);
 
 }
+
+int comprobarUsuarios(sqlite3 *db, char*nombre, char *contra){
+	int resul;
+	sqlite3_stmt *stmt;
+	char sql[100],nom[101] ,con[21];
+	int resultado = 0;
+	sprintf(sql,"select * from usuario where nom='%s'",nombre);
+	sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) ;
+	resul = sqlite3_step(stmt);
+	if(resul == SQLITE_ROW){
+		strcpy(con, (char*)sqlite3_column_text(stmt, 1));
+		printf("%s\n",con);fflush(stdout);
+		if(strcmp(contra,con)==0){
+			resultado = 2;
+		}else{
+			resultado = 1;
+		}
+	}
+
+	sqlite3_finalize(stmt);
+	return resultado;
+}
+
 
 
 

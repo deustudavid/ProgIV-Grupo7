@@ -9,6 +9,8 @@
 
 int main(int argc, char **argv) {
 	sqlite3 *db;
+	int resultado;
+	eAdministradores admins;
 	int result=sqlite3_open("bd.db",&db);
 	if (result != SQLITE_OK)
 	{
@@ -16,11 +18,13 @@ int main(int argc, char **argv) {
 		fflush(stdin);
 	}
 	//mostrarUsuarios(db);
-
-	if(logIn()){
-		menuUsuario();
+	resultado = logIn(db,admins);
+	switch(resultado){
+		case 0: printf("ERROR! Usuario desconocido\n"); fflush(stdout); break;
+		case 1: printf("ERROR! Contraseña incorrecta\n"); fflush(stdout); break;
+		case 2: menuUsuario(); break;
+		case 3: menuAdministrador(); break;
 	}
-
 	return 0;
 
 }
