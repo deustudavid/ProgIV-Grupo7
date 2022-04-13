@@ -68,7 +68,53 @@ int menuInicio(){
     fflush( stdin);
     return num;
 }
+void menuAdministrador(){
 
+	int num = 0;
+		printf("\n** MENU ADMINISTRADOR **\n \n");
+		fflush( stdin);
+
+		printf("1. ANIADIR PALABRA (Administrativa)\n");
+		fflush( stdin);
+		printf("2. COMPROBAR ESTADISTICAS \n");
+		fflush( stdin);
+		printf("3.BORRAR PALABRA \n");
+	    fflush( stdin);
+		printf("4.Cerrar sesion \n");
+		fflush(stdin);
+		printf("5.Salir \nOpcion: ");
+
+		fflush(stdin);
+		fflush( stdout);
+		scanf("%d", &num);
+		fflush( stdout);
+		fflush( stdin);
+		switch(num){
+
+							case 1:
+								aniadirPalabraFichero();
+								break;
+							case 2:
+								printf("Creandose las estadisticas...");
+								fflush(stdout);
+								break;
+
+							case 3:
+								break;
+							case 4:
+								logIn();
+								break;
+							case 5:
+								system("cls");
+								break;
+							default:
+								printf("Opcion incorrecta \n");
+								menuAdministrador();
+								break;
+				}
+
+}
+/*
 void menuAdministrador(){
 
 	int num = 0;
@@ -82,8 +128,8 @@ void menuAdministrador(){
 		fflush( stdin);
 		printf("4.ABRIR MENU USUARIO \n");
 		fflush( stdin);
-	/*	printf("5.BORRAR PALABRAS \n");
-		fflush( stdin);  */
+	//	printf("5.BORRAR PALABRAS \n");
+	//	fflush( stdin);
 		printf("6.Cerrar sesion \n");
 		fflush(stdin);
 		printf("7.Salir \nOpcion: ");
@@ -120,7 +166,7 @@ void menuAdministrador(){
 						menuAdministrador();
 						break;
 		}
-}
+}*/
 
 int numeroDePalabrasEnFichero(char * fichero){ //Cambiar a que devuelva un int (return del cont)
 
@@ -290,9 +336,9 @@ void aniadirPalabraFichero(){
 
 					pf = fopen("palabras.txt", "a");
 					if(pf != (FILE *)NULL){
-						//fprintf(pf,"\n");
-						fputs(palabraNueva,pf);
 						fprintf(pf,"\n");
+						fputs(palabraNueva,pf);
+						//fprintf(pf,"\n");
 
 						printf("Palabra anadida correctamente\n");
 						fflush(stdout);
@@ -409,19 +455,27 @@ int logIn(sqlite3 *db,eAdministradores admins){
 		gets(clave);
 
 		resultado = comprobarUsuarios(db, usuario, clave);
-		if(resultado == 0){
-			if(esAdministrador(usuario, clave)){
-				resultado = 3;
+
+		if((resultado == 2)){
+			printf("\nUsuario correcto\n ");
+			fflush(stdout);
+		}
+		else if(resultado ==3){//vamos a mirar en el txt a ver si es administrador
+			if (esAdministrador(usuario, clave) ==1) {
+				printf("\nEntrando como administrador...\n ");
+				fflush(stdout);
+				resultado=4;
 			}
 		}
 		return resultado;
 		/*Devuelve un 0 si el usuario no existe, un 1 si existe pero la contraseña no es correcta,
-		 * un 2 para nombre y con correctos y un 3 si es admin*/
+		 * un 2 para nombre y con correctos y un 4 si es admin*/
 }
 int esAdministrador(char * usuario, char * contra){
-	int i;
+	int i, result=0;
 	eAdministradores admins;
 	admins.numeroAdministadores = numeroDePalabrasEnFichero("administradores.txt");
+
 	admins.listaAdministradores = (sUsuario*)malloc(admins.numeroAdministadores*sizeof(sUsuario));
 
 			FILE* pf = fopen("administradores.txt", "r");
@@ -432,11 +486,16 @@ int esAdministrador(char * usuario, char * contra){
 				}
 			}
 			for(i=0;i<admins.numeroAdministadores;i++){
-				printf("%s %s", admins.listaAdministradores[i].usuario,admins.listaAdministradores[i].contrasena);
+				//printf("%s %s", admins.listaAdministradores[i].usuario,admins.listaAdministradores[i].contrasena);
+				if ( (strcmp(admins.listaAdministradores[i].usuario, usuario) == 0) && (strcmp(admins.listaAdministradores[i].contrasena, contra) == 0)) {
+					result=1;
+					break;
+				}
 			}
 				fclose(pf);
 
-	return 0;
+
+	return result;
 }
 
 void menuRegistro(sqlite3 *db){

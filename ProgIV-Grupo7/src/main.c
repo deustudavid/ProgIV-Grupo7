@@ -35,7 +35,11 @@ int main(int argc, char **argv) {
 			case 0: printf("ERROR! Usuario desconocido\n"); fflush(stdout); break;
 			case 1: printf("ERROR! Contraseña incorrecta\n"); fflush(stdout); break;
 			case 2: menuUsuario(); break;
-			case 3: menuAdministrador(); break;
+			//case 3: menuAdministrador(); break;
+			case 4: menuAdministrador();break;
+
+
+
 		}
 
 	}while(resultado < 2);

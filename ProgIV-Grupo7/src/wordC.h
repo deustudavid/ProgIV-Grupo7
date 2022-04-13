@@ -39,9 +39,10 @@ typedef struct {
 	int numeroAdministadores;
 }eAdministradores;
 
-
+int menuInicio();
 void menuUsuario();
 void menuAdministrador();
+//int menuAdministrador();
 void menuRegistro(sqlite3 *db);
 int numeroDePalabrasEnFichero(char * fichero);
 void jugarWordle();

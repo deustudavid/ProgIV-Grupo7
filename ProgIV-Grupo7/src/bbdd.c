@@ -29,12 +29,12 @@ void insertarUsuario(sqlite3 *db ,char *nombre, char *contrasenia){
 	sqlite3_finalize(stmt);
 }
 
-void insertarPuntuacion(sqlite3 *db ,char *nombre,char * palabra, int intentos[1]){
+void insertarPuntuacion(sqlite3 *db ,char *nombre,char * palabra, int intentos){
 	sqlite3_stmt *stmt;
 
-	char sql[100];
+	char sql[100];//
 
-	sprintf(sql, "insert into puntuación values('%s', '%s', %d)",nombre,palabra, &intentos);
+	sprintf(sql, "insert into puntuacion values('%s', '%s', %d)",nombre,palabra, intentos);
 	sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) ;
 	sqlite3_step(stmt);
 	sqlite3_finalize(stmt);
@@ -72,20 +72,21 @@ void mostrarUsuarios(sqlite3 *db){
 int comprobarUsuarios(sqlite3 *db, char*nombre, char *contra){
 	int resul;
 	sqlite3_stmt *stmt;
-	char sql[100],nom[101] ,con[21];
+	char sql[100],/*nom[101] ,*/con[21];
 	int resultado = 0;
 	sprintf(sql,"select * from usuario where nom='%s'",nombre);
 	sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) ;
 	resul = sqlite3_step(stmt);
 	if(resul == SQLITE_ROW){
 		strcpy(con, (char*)sqlite3_column_text(stmt, 1));
-		if(strcmp(contra,con)==0){
+		if(strcmp(contra,con)==0){// usuario correcto en BD
 			resultado = 2;
 		}else{
-			resultado = 1;
+			resultado = 1;    // usuario incorrecto en BD
 		}
 	}else{
-		resultado = 3;
+		resultado= 3;  // No existe en la BD, tenemos que mirar en el txt a ver si es administrador
+
 	}
 
 
