@@ -16,17 +16,18 @@
 #define USUARIO "c"
 #define CLAVE "13"
 
-void menuUsuario(){
-
+void menuUsuario(sqlite3 * db){
+	char nombre[51];
 	int num = 0;
 			printf("\n****BIENVENIDO, JUGADOR****\n \n");
 			fflush( stdin);
 			printf("1. JUGAR \n");
 			fflush( stdin);
-
-			printf("2.Cerrar sesion \n");
+			printf("2.Ver puntuaciones \n");
 			fflush(stdin);
-			printf("3.Salir \nOpcion: ");
+			printf("3.Cerrar sesion \n");
+			fflush(stdin);
+			printf("4.Salir \nOpcion: ");
 			fflush(stdin);
 			fflush( stdout);
 			scanf("%d", &num);
@@ -34,18 +35,25 @@ void menuUsuario(){
 			fflush( stdin);
 			switch(num){
 						case 1:
-							jugarWordle();
+							jugarWordle(db);
+							break;
+						case 2:
+							printf("\nUSUARIO: ");
+							fflush(stdout);
+							fflush(stdin);
+							gets(nombre);
+							mostrarPuntuaciones(db, nombre);
 							break;
 
-						case 2:
+						case 3:
 							menuInicio();
 							break;
-						case 3:
+						case 4:
 							exit(0);
 							break;
 						default:
 							printf("Opcion incorrecta \n");
-							menuUsuario();
+							menuUsuario(db);
 							break;
 		}
 }
@@ -76,13 +84,11 @@ void menuAdministrador(){
 
 		printf("1. ANIADIR PALABRA \n");
 		fflush( stdin);
-		printf("2. COMPROBAR ESTADISTICAS \n");
-		fflush( stdin);
-		printf("3.BORRAR PALABRA \n");
+		printf("2.BORRAR PALABRA \n");
 	    fflush( stdin);
-		printf("4.Cerrar sesion \n");
+		printf("3.Cerrar sesion \n");
 		fflush(stdin);
-		printf("5.Salir \nOpcion: ");
+		printf("4.Salir \nOpcion: ");
 
 		fflush(stdin);
 		fflush( stdout);
@@ -91,83 +97,25 @@ void menuAdministrador(){
 		fflush( stdin);
 		switch(num){
 
-							case 1:
-								aniadirPalabraFichero();
-								break;
-							case 2:
-								printf("Creandose las estadisticas...");
-								fflush(stdout);
-								break;
-
-							case 3:
-								mostrarPalabradeUnaPosicion();
-								break;
-							case 4:
-								menuInicio();
-								break;
-							case 5:
-								exit(0);
-								break;
-							default:
-								printf("Opcion incorrecta \n");
-								menuAdministrador();
-								break;
-				}
+			case 1:
+				aniadirPalabraFichero();
+				break;
+			case 2:
+				mostrarPalabradeUnaPosicion();
+				break;
+			case 3:
+				menuInicio();
+				break;
+			case 4:
+				exit(0);
+				break;
+			default:
+				printf("Opcion incorrecta \n");
+				menuAdministrador();
+				break;
+}
 
 }
-/*
-void menuAdministrador(){
-
-	int num = 0;
-		printf("\n** MENU ADMINISTRADOR **\n \n");
-		fflush( stdin);
-		printf("1. JUGAR \n");
-		fflush( stdin);
-		printf("2. ANIADIR PALABRA (Administrativa)\n");
-		fflush( stdin);
-		printf("3. COMPROBAR ESTADISTICAS \n");
-		fflush( stdin);
-		printf("4.ABRIR MENU USUARIO \n");
-		fflush( stdin);
-	//	printf("5.BORRAR PALABRAS \n");
-	//	fflush( stdin);
-		printf("6.Cerrar sesion \n");
-		fflush(stdin);
-		printf("7.Salir \nOpcion: ");
-
-		fflush(stdin);
-		fflush( stdout);
-		scanf("%d", &num);
-		fflush( stdout);
-		fflush( stdin);
-		switch(num){
-					case 1:
-						jugarWordle();
-						break;
-					case 2:
-						aniadirPalabraFichero();
-						break;
-					case 3:
-						printf("Creandose las estadisticas...");
-						fflush(stdout);
-						break;
-					case 4:
-						menuUsuario();
-						break;
-					case 5:
-						break;
-					case 6:
-						logIn();
-						break;
-					case 7:
-						system("cls");
-						break;
-					default:
-						printf("Opcion incorrecta \n");
-						menuAdministrador();
-						break;
-		}
-}*/
 
 int numeroDePalabrasEnFichero(char * fichero){ //Cambiar a que devuelva un int (return del cont)
 
@@ -201,7 +149,7 @@ int numeroDePalabrasEnFichero(char * fichero){ //Cambiar a que devuelva un int (
 
 
 
-void jugarWordle(){
+void jugarWordle(sqlite3 * db){
 	HANDLE consola=GetStdHandle(STD_OUTPUT_HANDLE);
 
 	//CARGAR PALABRAS
@@ -268,17 +216,17 @@ void jugarWordle(){
 
 
 			switch(opcion){
-								case 1:
-									jugarWordle();
-									break;
-								case 2:
-									menuUsuario();
-									break;
+				case 1:
+					jugarWordle(db);
+					break;
+				case 2:
+					menuUsuario(db);
+					break;
 
-								default:
-									printf("Opcion incorrecta \n");
-									break;
-					}
+				default:
+					printf("Opcion incorrecta \n");
+					break;
+	}
 
 
 		}else{
@@ -298,10 +246,10 @@ void jugarWordle(){
 
 			switch(opcion){
 							case 1:
-									jugarWordle();
+									jugarWordle(db);
 									break;
 							case 2:
-									menuUsuario();
+									menuUsuario(db);
 									break;
 
 							default:
@@ -469,7 +417,7 @@ int logIn(sqlite3 *db,eAdministradores admins){
 		else if(resultado == 2){
 			printf("\nUsuario correcto\n ");
 			fflush(stdout);
-			menuUsuario();
+			menuUsuario(db);
 		}
 		else if(resultado ==3){//vamos a mirar en el txt a ver si es administrador
 			if (esAdministrador(usuario, clave) ==1) {
@@ -544,11 +492,10 @@ void mostrarPalabradeUnaPosicion(){
 	 bool seguir_leyendo = true;
 	 int linea_actual = 1;
 
-	printf("Nº de linea cuya palabra quieres saber: ");
+	printf("NÂº de linea cuya palabra quieres saber: ");
 	fflush(stdout);
 	fflush(stdin);
 	scanf("%d", &linea_a_leer);
-
 		pf = fopen("palabras.txt", "r");
 		if(pf != (FILE *)NULL){
 			do
@@ -560,12 +507,15 @@ void mostrarPalabradeUnaPosicion(){
 
 			      seguir_leyendo = false;
 			      printf("El fichero tiene %d lineas.\n", linea_actual-1);
+			      fflush(stdout);
 			      printf("No se pudo encontrar la linea %d.\n", linea_a_leer);
+			      fflush(stdout);
 			    }
 			    else if (linea_actual == linea_a_leer)
 			    {
 			      seguir_leyendo = false;
 			      printf("La linea contiene la palabra:\n%s", buffer);
+			      fflush(stdout);
 			    }
 
 			    linea_actual++;
@@ -574,64 +524,67 @@ void mostrarPalabradeUnaPosicion(){
 			fclose(pf);
 		}else{
 			printf("Error al abrir el fichero");
+			fflush(stdout);
 		}
 		eliminarPalabraDeUnaPosicion();
 }
 void eliminarPalabraDeUnaPosicion(){
 
 
-	FILE *pf, *temporal;
+    FILE *pf, *temporal;
 
-	  char nombre_ficheroTemporal[TAMANYO_NOMBREFICHERO];
+      char nombre_ficheroTemporal[TAMANYO_NOMBREFICHERO];
 
-	  char buffer[LINEA_MAX];
-	  int linea_a_borrar = 0;
+      char buffer[LINEA_MAX];
+      int linea_a_borrar = 0;
 
-	  printf("Introduce la linea cuya palabra quieras eliminar del fichero: ");
-	  fflush(stdout);
-	  fflush(stdin);
-	  scanf("%d", &linea_a_borrar);
+      printf("Introduce la linea cuya palabra quieras eliminar del fichero: ");
+      fflush(stdout);
+      fflush(stdin);
+      scanf("%d", &linea_a_borrar);
 
-	  strcpy(nombre_ficheroTemporal, "temp_");
-	  strcat(nombre_ficheroTemporal, "palabras.txt");
-
-
-
-	  pf = fopen("palabras.txt", "r");
-	  temporal = fopen(nombre_ficheroTemporal, "w");
+      strcpy(nombre_ficheroTemporal, "temp");
+      strcat(nombre_ficheroTemporal, "palabras.txt");
 
 
-	  if (pf == NULL || temporal == NULL)
-	  {
-	    printf("Error abriendo el fichero\n");
 
-	  }
+      pf = fopen("palabras.txt", "r");
+      temporal = fopen(nombre_ficheroTemporal, "w");
 
 
-	  bool seguir_leyendo = true;
-	  int linea_actual = 1;
-	  do
-	  {
+      if (pf == NULL || temporal == NULL)
+      {
+        printf("Error abriendo el fichero\n");
 
-	    fgets(buffer, LINEA_MAX, pf);
-
-
-	    if (feof(pf)) seguir_leyendo = false;
-	    else if (linea_actual != linea_a_borrar)
-	      fputs(buffer, temporal);
+      }
 
 
-	    linea_actual++;
+      bool seguir_leyendo = true;
+      int linea_actual = 1;
+      do
+      {
 
-	  } while (seguir_leyendo);
-
-	  fclose(pf);
-	  fclose(temporal);
+        fgets(buffer, LINEA_MAX, pf);
 
 
-	  remove("palabras.txt");
-	  rename(nombre_ficheroTemporal, "palabras.txt");
-	  printf("Palabra eliminada\n");
-	  fflush(stdout);
-	  menuAdministrador();
+        if (feof(pf)) seguir_leyendo = false;
+        else if (linea_actual != linea_a_borrar)
+          fputs(buffer, temporal);
+
+
+        linea_actual++;
+
+      } while (seguir_leyendo);
+
+      fclose(pf);
+      fclose(temporal);
+
+
+      remove("palabras.txt");
+      rename(nombre_ficheroTemporal, "palabras.txt");
+      printf("Palabra eliminada\n");
+      fflush(stdout);
+      menuAdministrador();
 }
+
+

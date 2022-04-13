@@ -1,5 +1,4 @@
 coche
-libro
 penco
 arbol
 jarra
@@ -20,4 +19,3 @@ idolo
 labio
 hueco
 
-flaco

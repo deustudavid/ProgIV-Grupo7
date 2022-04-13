@@ -10,6 +10,9 @@
 #ifndef WORDC_H_
 #define WORDC_H_
 
+
+
+
 typedef struct
 {
 	char jugador[20], palabra[6]; //Hay que meter si eso el tipo de la palabra
@@ -40,12 +43,12 @@ typedef struct {
 }eAdministradores;
 
 int menuInicio();
-void menuUsuario();
+void menuUsuario(sqlite3 * db);
 void menuAdministrador();
 //int menuAdministrador();
 void menuRegistro(sqlite3 *db);
 int numeroDePalabrasEnFichero(char * fichero);
-void jugarWordle();
+void jugarWordle(sqlite3 * db);
 bool procesarPalabra(const char* laRespuesta, const char* elIntento);
 void aniadirPalabraFichero();
 int logIn();
