@@ -11,6 +11,7 @@
 
 #define MAX_NUM_PALABRAS 100
 #define LINEA_MAX 2048
+#define TAMANYO_NOMBREFICHERO 1024
 
 #define USUARIO "c"
 #define CLAVE "13"
@@ -574,5 +575,63 @@ void mostrarPalabradeUnaPosicion(){
 		}else{
 			printf("Error al abrir el fichero");
 		}
-		menuAdministrador();
+		eliminarPalabraDeUnaPosicion();
+}
+void eliminarPalabraDeUnaPosicion(){
+
+
+	FILE *pf, *temporal;
+
+	  char nombre_ficheroTemporal[TAMANYO_NOMBREFICHERO];
+
+	  char buffer[LINEA_MAX];
+	  int linea_a_borrar = 0;
+
+	  printf("Introduce la linea cuya palabra quieras eliminar del fichero: ");
+	  fflush(stdout);
+	  fflush(stdin);
+	  scanf("%d", &linea_a_borrar);
+
+	  strcpy(nombre_ficheroTemporal, "temp_");
+	  strcat(nombre_ficheroTemporal, "palabras.txt");
+
+
+
+	  pf = fopen("palabras.txt", "r");
+	  temporal = fopen(nombre_ficheroTemporal, "w");
+
+
+	  if (pf == NULL || temporal == NULL)
+	  {
+	    printf("Error abriendo el fichero\n");
+
+	  }
+
+
+	  bool seguir_leyendo = true;
+	  int linea_actual = 1;
+	  do
+	  {
+
+	    fgets(buffer, LINEA_MAX, pf);
+
+
+	    if (feof(pf)) seguir_leyendo = false;
+	    else if (linea_actual != linea_a_borrar)
+	      fputs(buffer, temporal);
+
+
+	    linea_actual++;
+
+	  } while (seguir_leyendo);
+
+	  fclose(pf);
+	  fclose(temporal);
+
+
+	  remove("palabras.txt");
+	  rename(nombre_ficheroTemporal, "palabras.txt");
+	  printf("Palabra eliminada\n");
+	  fflush(stdout);
+	  menuAdministrador();
 }

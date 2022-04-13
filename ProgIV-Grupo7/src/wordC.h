@@ -51,6 +51,7 @@ void aniadirPalabraFichero();
 int logIn();
 int esAdministrador(char * usuario, char * contra);
 void mostrarPalabradeUnaPosicion();
+void eliminarPalabraDeUnaPosicion();
 
 
 #endif /* WORDC_H_ */

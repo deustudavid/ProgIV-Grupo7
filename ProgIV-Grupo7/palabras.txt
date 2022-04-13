@@ -5,7 +5,6 @@ arbol
 jarra
 roble
 marco
-nacer
 letra
 tecla
 marca
@@ -15,13 +14,10 @@ salsa
 agita
 abeja
 corte
-dados
 queso
 feliz
-flaca
 idolo
 labio
-ligar
 hueco
-salsa
-haces
+
+flaco
