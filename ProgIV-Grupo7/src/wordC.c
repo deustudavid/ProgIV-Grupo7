@@ -10,6 +10,7 @@
 #include "bbdd.h"
 
 #define MAX_NUM_PALABRAS 100
+#define LINEA_MAX 2048
 
 #define USUARIO "c"
 #define CLAVE "13"
@@ -98,6 +99,7 @@ void menuAdministrador(){
 								break;
 
 							case 3:
+								mostrarPalabradeUnaPosicion();
 								break;
 							case 4:
 								menuInicio();
@@ -534,6 +536,43 @@ void menuRegistro(sqlite3 *db){
 	insertarUsuario(db ,usuario, clave);
 
 }
+void mostrarPalabradeUnaPosicion(){
+	FILE *pf;
+	int linea_a_leer = 0;
+	char buffer[LINEA_MAX];
+	 bool seguir_leyendo = true;
+	 int linea_actual = 1;
 
+	printf("Nº de linea cuya palabra quieres saber: ");
+	fflush(stdout);
+	fflush(stdin);
+	scanf("%d", &linea_a_leer);
 
+		pf = fopen("palabras.txt", "r");
+		if(pf != (FILE *)NULL){
+			do
+			  {
+			    fgets(buffer, LINEA_MAX, pf);
 
+			    if (feof(pf))
+			    {
+
+			      seguir_leyendo = false;
+			      printf("El fichero tiene %d lineas.\n", linea_actual-1);
+			      printf("No se pudo encontrar la linea %d.\n", linea_a_leer);
+			    }
+			    else if (linea_actual == linea_a_leer)
+			    {
+			      seguir_leyendo = false;
+			      printf("La linea contiene la palabra:\n%s", buffer);
+			    }
+
+			    linea_actual++;
+
+			  } while (seguir_leyendo);
+			fclose(pf);
+		}else{
+			printf("Error al abrir el fichero");
+		}
+		menuAdministrador();
+}

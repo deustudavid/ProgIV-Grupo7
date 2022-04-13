@@ -50,7 +50,7 @@ bool procesarPalabra(const char* laRespuesta, const char* elIntento);
 void aniadirPalabraFichero();
 int logIn();
 int esAdministrador(char * usuario, char * contra);
-
+void mostrarPalabradeUnaPosicion();
 
 
 #endif /* WORDC_H_ */
