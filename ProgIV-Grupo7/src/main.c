@@ -9,7 +9,7 @@
 
 int main(int argc, char **argv) {
 	sqlite3 *db;
-	int resultado;
+	int resultadoInicio, resultadoLogin;
 	eAdministradores admins;
 	int result=sqlite3_open("bd.db",&db);
 	if (result != SQLITE_OK)
@@ -19,30 +19,22 @@ int main(int argc, char **argv) {
 	}
 	//mostrarUsuarios(db);
 	do{
-		resultado = 4;
-		resultado = menuInicio();
-			switch(resultado){
-				case 1: break;
+		resultadoInicio = 4;
+		resultadoInicio = menuInicio();
+			switch(resultadoInicio){
+				case 1: logIn(db, admins);break;
 				case 2: menuRegistro(db); break;
 				case 3: exit(0); break;
-				default: printf("No es una opcion valida\n"); fflush(stdout); resultado = 4;
+				default: printf("No es una opcion valida\n"); fflush(stdout); resultadoInicio = 4;
 			}
 
-		}while(resultado == 4);
+		}while(resultadoInicio == 4);
+
 	do{
-	resultado = logIn(db,admins);
-		switch(resultado){
-			case 0: printf("ERROR! Usuario desconocido\n"); fflush(stdout);logIn(); break;
-			case 1: printf("ERROR! Contraseña incorrecta\n"); fflush(stdout); logIn(); break;
-			case 2: menuUsuario(); break;
-			//case 3: menuAdministrador(); break;
-			case 4: menuAdministrador();break;
+	resultadoLogin = logIn(db,admins);
 
 
-
-		}
-
-	}while(resultado != 2 || resultado !=4);
+	}while(resultadoLogin != 2 || resultadoLogin !=4);
 
 
 

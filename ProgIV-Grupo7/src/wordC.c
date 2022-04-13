@@ -17,7 +17,7 @@
 void menuUsuario(){
 
 	int num = 0;
-			printf("\n** BIENVENIDO A WORDC **\n \n");
+			printf("\n****BIENVENIDO, JUGADOR****\n \n");
 			fflush( stdin);
 			printf("1. JUGAR \n");
 			fflush( stdin);
@@ -36,10 +36,10 @@ void menuUsuario(){
 							break;
 
 						case 2:
-							logIn();
+							menuInicio();
 							break;
 						case 3:
-							system("cls");
+							exit(0);
 							break;
 						default:
 							printf("Opcion incorrecta \n");
@@ -51,7 +51,7 @@ void menuUsuario(){
 int menuInicio(){
 
     int num = 0;
-    printf("\n BIENVENIDO A WORDC \n \n");
+    printf("\n ****BIENVENIDO A WORDC**** \n \n");
     fflush( stdin);
     printf("1. INICIAR SESION \n");
     fflush( stdin);
@@ -63,12 +63,13 @@ int menuInicio(){
     scanf("%d", &num);
     fflush( stdout);
     fflush( stdin);
+
     return num;
 }
 void menuAdministrador(){
 
 	int num = 0;
-		printf("\n** MENU ADMINISTRADOR **\n \n");
+		printf("\n**** MENU ADMINISTRADOR ****\n \n");
 		fflush( stdin);
 
 		printf("1. ANIADIR PALABRA \n");
@@ -99,10 +100,10 @@ void menuAdministrador(){
 							case 3:
 								break;
 							case 4:
-								logIn();
+								menuInicio();
 								break;
 							case 5:
-								system("cls");
+								exit(0);
 								break;
 							default:
 								printf("Opcion incorrecta \n");
@@ -440,22 +441,29 @@ bool procesarPalabra(const char* laRespuesta, const char* elIntento){
 }
 
 int logIn(sqlite3 *db,eAdministradores admins){
+
+
 	char usuario[51];
 	char clave[51];
 	int resultado;
-		printf("\nINICIAR SESIÓN\n");
-		printf("\nUSUARIO: ");
+		printf("\n****INICIAR SESION****\n\n");
+		printf("USUARIO: \n");
 		fflush(stdout);
 		fflush(stdin);
 		gets(usuario);
-		printf("CONTRASENA: ");
+		printf("CONTRASENA: \n");
 		fflush(stdout);
 		fflush(stdin);
 		gets(clave);
 
 		resultado = comprobarUsuarios(db, usuario, clave);
 
-		if((resultado == 2)){
+		if(resultado==1){
+			printf("\nContrasenia incorrecta!\n ");
+			fflush(stdout);
+
+		}
+		else if(resultado == 2){
 			printf("\nUsuario correcto\n ");
 			fflush(stdout);
 			menuUsuario();
@@ -466,6 +474,11 @@ int logIn(sqlite3 *db,eAdministradores admins){
 				fflush(stdout);
 				resultado=4;
 				menuAdministrador();
+			}else{
+				resultado=3;
+				printf("\nEse usuario no existe...\n ");
+				fflush(stdout);
+
 			}
 		}
 		return resultado;
@@ -487,7 +500,6 @@ int esAdministrador(char * usuario, char * contra){
 				}
 			}
 			for(i=0;i<admins.numeroAdministadores;i++){
-				//printf("%s %s", admins.listaAdministradores[i].usuario,admins.listaAdministradores[i].contrasena);
 				if ( (strcmp(admins.listaAdministradores[i].usuario, usuario) == 0) && (strcmp(admins.listaAdministradores[i].contrasena, contra) == 0)) {
 					result=1;
 					break;
@@ -503,12 +515,13 @@ void menuRegistro(sqlite3 *db){
 	char usuario[51];
 	char clave[51];
 	int resultado = 0;
-
-	printf("\nUSUARIO: ");
+	printf("\n****REGISTRAR NUEVO USUARIO****\n\n ");
+	fflush(stdout);
+	printf("USUARIO:\n ");
 	fflush(stdout);
 	fflush(stdin);
 	gets(usuario);
-	printf("CONTRASENA: ");
+	printf("CONTRASENIA:\n ");
 	fflush(stdout);
 	fflush(stdin);
 	gets(clave);
@@ -519,8 +532,7 @@ void menuRegistro(sqlite3 *db){
 		menuRegistro(db);
 	}
 	insertarUsuario(db ,usuario, clave);
-	printf("Usuario creado correctamente\n");
-	fflush(stdout);
+
 }
 
 

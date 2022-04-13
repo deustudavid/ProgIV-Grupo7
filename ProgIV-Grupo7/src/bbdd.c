@@ -27,6 +27,8 @@ void insertarUsuario(sqlite3 *db ,char *nombre, char *contrasenia){
 	sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) ;
 	sqlite3_step(stmt);
 	sqlite3_finalize(stmt);
+
+
 }
 
 void insertarPuntuacion(sqlite3 *db ,char *nombre,char * palabra, int intentos){
@@ -73,7 +75,7 @@ int comprobarUsuarios(sqlite3 *db, char*nombre, char *contra){
 	int resul;
 	sqlite3_stmt *stmt;
 	char sql[100],/*nom[101] ,*/con[21];
-	int resultado = 0;
+	int resultado = 3;
 	sprintf(sql,"select * from usuario where nom='%s'",nombre);
 	sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) ;
 	resul = sqlite3_step(stmt);
