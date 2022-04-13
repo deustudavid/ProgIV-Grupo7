@@ -32,8 +32,8 @@ int main(int argc, char **argv) {
 	do{
 	resultado = logIn(db,admins);
 		switch(resultado){
-			case 0: printf("ERROR! Usuario desconocido\n"); fflush(stdout); break;
-			case 1: printf("ERROR! Contraseña incorrecta\n"); fflush(stdout); break;
+			case 0: printf("ERROR! Usuario desconocido\n"); fflush(stdout);logIn(); break;
+			case 1: printf("ERROR! Contraseña incorrecta\n"); fflush(stdout); logIn(); break;
 			case 2: menuUsuario(); break;
 			//case 3: menuAdministrador(); break;
 			case 4: menuAdministrador();break;
@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
 
 		}
 
-	}while(resultado < 2);
+	}while(resultado != 2 || resultado !=4);
 
 
 

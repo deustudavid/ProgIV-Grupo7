@@ -15,10 +15,12 @@ salsa
 agita
 abeja
 corte
-daños
+dados
 queso
 feliz
 flaca
 idolo
 labio
 ligar
+hueco
+salsa

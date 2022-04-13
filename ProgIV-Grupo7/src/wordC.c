@@ -21,11 +21,10 @@ void menuUsuario(){
 			fflush( stdin);
 			printf("1. JUGAR \n");
 			fflush( stdin);
-			printf("2. ANIADIR PALABRA \n");
-			fflush( stdin);
-			printf("3.Cerrar sesion \n");
+
+			printf("2.Cerrar sesion \n");
 			fflush(stdin);
-			printf("4.Salir \nOpcion: ");
+			printf("3.Salir \nOpcion: ");
 			fflush(stdin);
 			fflush( stdout);
 			scanf("%d", &num);
@@ -35,13 +34,11 @@ void menuUsuario(){
 						case 1:
 							jugarWordle();
 							break;
+
 						case 2:
-							aniadirPalabraFichero();
-							break;
-						case 3:
 							logIn();
 							break;
-						case 4:
+						case 3:
 							system("cls");
 							break;
 						default:
@@ -74,7 +71,7 @@ void menuAdministrador(){
 		printf("\n** MENU ADMINISTRADOR **\n \n");
 		fflush( stdin);
 
-		printf("1. ANIADIR PALABRA (Administrativa)\n");
+		printf("1. ANIADIR PALABRA \n");
 		fflush( stdin);
 		printf("2. COMPROBAR ESTADISTICAS \n");
 		fflush( stdin);
@@ -320,17 +317,17 @@ void jugarWordle(){
 
 
 }
-//Añadir una función para el menú que aparece después de jugar
+
 void aniadirPalabraFichero(){
 
-	int salir=0;
-	do {
+
+
+
 		char* palabraNueva=malloc(6*sizeof(char));
 
 			printf("Introduce una palabra de 5 letras:\n");
 			fflush(stdout);
 			gets(palabraNueva);
-
 			if (strlen(palabraNueva)==5) {
 				FILE *pf;
 
@@ -342,20 +339,22 @@ void aniadirPalabraFichero(){
 
 						printf("Palabra anadida correctamente\n");
 						fflush(stdout);
-						menuUsuario();
-						salir = 1;
+						fclose(pf);
+						menuAdministrador();
+
 					}
 					else{
 						printf("Error al abrir el fichero");
 						fflush(stdout);
+						menuAdministrador();
 					}
-					fclose(pf);
+
 			} else {
 				printf("Error. La palabra tiene que ser de 5 letras\n");
 				fflush(stdout);
 				aniadirPalabraFichero();
 			}
-	} while (salir==0);
+
 
 
 
@@ -459,12 +458,14 @@ int logIn(sqlite3 *db,eAdministradores admins){
 		if((resultado == 2)){
 			printf("\nUsuario correcto\n ");
 			fflush(stdout);
+			menuUsuario();
 		}
 		else if(resultado ==3){//vamos a mirar en el txt a ver si es administrador
 			if (esAdministrador(usuario, clave) ==1) {
 				printf("\nEntrando como administrador...\n ");
 				fflush(stdout);
 				resultado=4;
+				menuAdministrador();
 			}
 		}
 		return resultado;
